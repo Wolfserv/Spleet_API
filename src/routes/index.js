@@ -3,6 +3,21 @@ const fs = require('fs');
 const axios = require('axios');
 const router = express.Router();
 
+var videoInfos = function(videoTitle, videoId) {
+  return ({title: videoTitle,
+          id: videoId});
+}
+
+var searchResults = function(items) {
+  var res = [];
+  for (let idx = 0; idx < 5; idx++) {
+    var infos = videoInfos(items[idx].snippet.title,
+                          items[idx].id.videoId);
+    res.push(infos);
+  }
+  return (res);
+};
+
 const getHome = async (req, res, next) => {
     try {
       res.json({message: 'GET succesful'});
@@ -18,12 +33,11 @@ const searchVideo = async (req, res, next) => {
     try {
       if (process.env.YT_KEY) {
         var name = req.body.name;
-        axios.get(`${YT_REQ}?part=snippet&type=video&maxResults=1&videoEmbeddable=true&q=${name}&key=${process.env.YT_KEY}`)
+        axios.get(`${process.env.YT_REQ}?part=snippet&type=video&maxResults=5&videoEmbeddable=true&q=${name}&key=${process.env.YT_KEY}`)
         .then(result => {
-          var videoId = result.data.items[0].id.videoId;
-          console.log(videoId);
+          var results = searchResults(result.data.items);
           res.status(201);
-          res.json("worked")
+          res.json(results);
         }).catch(e => {
           console.log(e);
         });
