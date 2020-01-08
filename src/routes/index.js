@@ -3,16 +3,16 @@ const fs = require('fs');
 const axios = require('axios');
 const router = express.Router();
 
-var videoInfos = function(videoTitle, videoId) {
-  return ({title: videoTitle,
-          id: videoId});
+var videoInfos = function(item) {
+  return ({title: item.snippet.title,
+            by: item.snippet.channelTitle,
+            id: item.id.videoId});
 }
 
 var searchResults = function(items) {
   var res = [];
   for (let idx = 0; idx < 5; idx++) {
-    var infos = videoInfos(items[idx].snippet.title,
-                          items[idx].id.videoId);
+    var infos = videoInfos(items[idx]);
     res.push(infos);
   }
   return (res);
