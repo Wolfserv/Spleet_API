@@ -6,6 +6,7 @@ function download()
     filename=`ls ~/bullshit/data | tr -d '\n'`
     echo $filename
     spleeter separate -i ~/bullshit/data/"$filename" -p spleeter:2stems -o ~/bullshit/spleeted
+    rm -rf ~/bullshit/data/*
 }
 
 download $1
