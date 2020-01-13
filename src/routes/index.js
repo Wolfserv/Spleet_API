@@ -2,6 +2,7 @@ const express = require('express');
 const fs = require('fs');
 const axios = require('axios');
 const router = express.Router();
+//const shell = require('shelljs');
 
 var videoInfos = function(item) {
   return ({title: item.snippet.title,
@@ -52,5 +53,17 @@ const searchVideo = async (req, res, next) => {
   router
     .route('/api/v1/search')
     .post(searchVideo);
+
+const selectVideo = async (req, res, next) => {
+    try {
+      //shell.exec("../scripts/download.sh");
+    } catch (e) {
+      next(e);
+    }
+  };
+  router
+    .route('/api/v1/select')
+    .post(selectVideo);
+
 
 module.exports = router;
